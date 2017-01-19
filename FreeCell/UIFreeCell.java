@@ -1,5 +1,7 @@
 package FreeCell;
 
+import FreeCell.Exceptions.EndOfHistoryException;
+import FreeCell.Exceptions.WonGameException;
 import com.sun.jmx.remote.security.JMXPluggableAuthenticator;
 
 import javax.swing.*;
@@ -67,7 +69,13 @@ public class UIFreeCell extends JFrame {
     }
 
     class ActionUndo implements ActionListener{
-        public void actionPerformed(ActionEvent e) { model.undo(); }
+        public void actionPerformed(ActionEvent e) {
+            try{
+                model.undo();
+            }catch(EndOfHistoryException exc){
+                Notification note = new Notification(exc.getMessage());
+            }
+        }
     }
 
     class AutoEndListener implements ItemListener{

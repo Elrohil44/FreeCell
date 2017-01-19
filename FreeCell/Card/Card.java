@@ -10,15 +10,11 @@ import java.io.File;
 public class Card {
     private static final String IMAGE_PATH;
     private static final Class <?> CLASS;
-    private static final String PACKAGE_NAME;
-    private static final ClassLoader LOADER;
     public static final int CARD_WIDTH;
     public static final int CARD_HEIGHT;
     static{
         IMAGE_PATH = "images/";
         CLASS = Card.class;
-        LOADER = CLASS.getClassLoader();
-        PACKAGE_NAME = CLASS.getPackage().getName();
         java.net.URL imgURL = CLASS.getResource(IMAGE_PATH+"2c.png");
         ImageIcon image = new ImageIcon(imgURL);
         CARD_WIDTH=image.getIconWidth();
@@ -30,7 +26,6 @@ public class Card {
     private ImageIcon cardImage;
     private Point2D position;
     private boolean highlighted=false;
-    private boolean toExamine=false;
 
     public Card(CardFace face, CardSuit suit){
         this.face=face;
@@ -47,10 +42,6 @@ public class Card {
 
     public void setHighlighted(boolean highlighted) {
         this.highlighted = highlighted;
-    }
-
-    public boolean getHighlighted(){
-        return this.highlighted;
     }
 
     public int getX() {
@@ -94,16 +85,8 @@ public class Card {
                 && point.getY()>position.getY() && point.getY()<position.getY()+CARD_HEIGHT);
     }
 
-    public void setX(int x) {
-        position.setX(x);
-    }
-
-    public void setY(int y) {
-        position.setY(y);
-    }
-
     @Override
     public String toString() {
-        return suit +" "+ face;
+        return face +" of "+ suit;
     }
 }

@@ -23,15 +23,13 @@ import java.util.IdentityHashMap;
  */
 public class UICard extends JComponent implements MouseListener,MouseMotionListener,ChangeListener {
     private static final int NUMBER_OF_PILES = 8;
-
-    //... Constants specifying position of display elements
-    private static final int GAP = 10;
+    private static final int GAP = 15;
     private static final int FOUNDATION_TOP = GAP;
     private static final int FOUNDATION_BOTTOM = FOUNDATION_TOP + Card.CARD_HEIGHT;
 
 
     private static final int TABLEAU_TOP = GAP + FOUNDATION_BOTTOM;
-    private static final int TABLEAU_INCR_Y  = 25;
+    private static final int TABLEAU_INCR_Y  = 35;
     private static final int TABLEAU_START_X = GAP;
     private static final int TABLEAU_INCR_X  = Card.CARD_WIDTH + GAP;
 
@@ -45,11 +43,9 @@ public class UICard extends JComponent implements MouseListener,MouseMotionListe
     private Point2D movedFrom;
     private boolean selected=false;
 
-    private Card highlighted = null;
     private Card draggedCard = null;
     private Card toExamine = null;
     private CardCascade draggedFromCascade = null;
-    private int button;
     private boolean draggable;
 
     private IdentityHashMap<CardCascade, Rectangle> whereIs = new IdentityHashMap<CardCascade,Rectangle>();
@@ -190,9 +186,7 @@ public class UICard extends JComponent implements MouseListener,MouseMotionListe
                 draggedFromCascade = null;
                 return;
             }
-            if (draggable && draggedFromCascade == onto && e.getButton() == 1) {
-                selected = false;
-            } else selected = true;
+            selected=!(draggable && draggedFromCascade == onto && e.getButton() == 1);
             if (onto.getType() == CascadeType.FOUNDATION) return;
             if (!onto.isEmpty()) draggedFromCascade = onto;
             if (draggedCard != null) {
@@ -214,7 +208,6 @@ public class UICard extends JComponent implements MouseListener,MouseMotionListe
     }
 
     public void rightClick(){
-        //if(draggedCard==null) return;
         if(draggedFromCascade.getType()== CascadeType.CELL){
             try {
                 model.moveToFoundation(draggedFromCascade);
@@ -253,9 +246,6 @@ public class UICard extends JComponent implements MouseListener,MouseMotionListe
             }
             Point2D point = new Point2D(e.getX()-dragFrom.getX(),e.getY()-dragFrom.getY());
 
-            //x=Math.min(Math.max(x,0),getWidth() - Card.CARD_WIDTH);
-            //y=Math.min(Math.max(y,0),getHeight() - Card.CARD_HEIGHT);
-
             draggedCard.setPosition(point);
 
             this.repaint();
@@ -293,7 +283,6 @@ public class UICard extends JComponent implements MouseListener,MouseMotionListe
         if (draggedCard!=null) draggedCard.setHighlighted(false);
         draggedCard=null;
         toExamine=null;
-        //draggedFromCascade=null;
     }
 
     private CardCascade findCascadeAt(Point2D p){

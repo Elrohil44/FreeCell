@@ -138,6 +138,7 @@ public class GameModel{
     }
 
     public void moveToFoundation(CardCascade from) throws WrongMoveException, WonGameException, EndGameException {
+        if(from.isEmpty()) return;
         try{
             move(from, cardFoundations[findFoundationSuit(from.peek().getSuit())],false);
         }
@@ -282,13 +283,15 @@ public class GameModel{
                         }
                     }
                 }
-            } catch(NonRemovalCardException e){}
+            } catch(NonRemovalCardException e){
+                System.err.println(e.getMessage());
+            }
 
         }
     }
 
 
-    public boolean undo(){
+    public boolean undo() throws EndOfHistoryException {
         notifyEveryone();
         if(!moveHistory.isEmpty()) {
             Move m = moveHistory.pop();
@@ -301,7 +304,7 @@ public class GameModel{
                 m.getFrom().forcePush(c);
                 notifyEveryone();
             }
-        } else return false;
+        } else throw (new EndOfHistoryException("Koniec historii ruchów"));
         return true;
     }
 
@@ -332,7 +335,9 @@ public class GameModel{
             for (int i = 0; i < count; i++) {
                 try {
                     cascade.push(from.pop());
-                } catch (NonRemovalCardException exc) {}
+                } catch (NonRemovalCardException exc) {
+                    System.err.println(exc.getMessage());
+                }
             }
             for (Card c : cascade.reverseIterate()) {
                 onto.push(c);

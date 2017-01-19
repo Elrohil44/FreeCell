@@ -17,14 +17,19 @@ public class Notification extends JFrame {
 
     public Notification(String s){
         super();
-        setLayout(new GridBagLayout());
+        setLayout(new BorderLayout());
         addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
                 setShape(new RoundRectangle2D.Double(0,0,getWidth(),getHeight(),0.5*getWidth(),0.5*getHeight()));
             }
         });
-
+        JPanel A = new JPanel();
+        A.setLayout(new FlowLayout());
+        JPanel B = new JPanel();
+        B.setLayout(new FlowLayout());
+        JPanel C = new JPanel();
+        C.setLayout(new GridLayout(2,1));
         JButton close = new JButton("Close");
         close.addActionListener(new ActionListener() {
             @Override
@@ -32,17 +37,23 @@ public class Notification extends JFrame {
                 dispose();
             }
         });
+        A.add(close);
         setUndecorated(true);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        add(new JLabel(s));
+        B.add(new JLabel(s));
+        C.add(A);
+        C.add(B);
+        JPanel control = new JPanel();
+        control.setLayout(new FlowLayout());
+        control.add(C);
+        add(control);
         GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
         GraphicsDevice gd = ge.getDefaultScreenDevice();
         isTranslucencySupported = gd.isWindowTranslucencySupported(GraphicsDevice.WindowTranslucency.TRANSLUCENT);
         if(isTranslucencySupported){
             setOpacity(0.9f);
         }
-        add(close);
         pack();
         setVisible(true);
         setAlwaysOnTop(true);

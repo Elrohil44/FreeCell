@@ -8,11 +8,11 @@ import FreeCell.Exceptions.*;
  */
 public class CardCascade {
     private ArrayList<Card> cards = new ArrayList<Card>();
+    private boolean highlighted=false;
 
     public void forcePush(Card card){
         cards.add(card);
     }
-    boolean highlighted=false;
 
     public boolean isHighlighted() {
         return highlighted;

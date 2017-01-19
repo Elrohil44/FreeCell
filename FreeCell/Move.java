@@ -30,6 +30,6 @@ public class Move {
 
     @Override
     public String toString() {
-        return from.toString()+" "+onto.toString()+" "+count;
+        return from.toString()+" -> "+onto.toString()+"\t-\tLiczba kart: "+count;
     }
 }
