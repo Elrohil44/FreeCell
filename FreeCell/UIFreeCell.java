@@ -42,7 +42,11 @@ public class UIFreeCell extends JFrame {
         JButton Undo = new JButton("Undo");
         Undo.addActionListener(new ActionUndo());
 
+        JButton TryAgainButton = new JButton("Try again the same");
+        TryAgainButton.addActionListener(new TryAgain());
+
         JPanel controlPanel = new JPanel(new FlowLayout());
+        controlPanel.add(TryAgainButton);
         controlPanel.add(TipButton);
         controlPanel.add(GameBtn);
         controlPanel.add(Undo);
@@ -89,6 +93,17 @@ public class UIFreeCell extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
             model.getTip();
+        }
+    }
+
+    class TryAgain implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            try{
+                model.undoAll();
+            } catch (EndOfHistoryException exc){
+                Notification note = new Notification(exc.getMessage());
+            }
         }
     }
 }

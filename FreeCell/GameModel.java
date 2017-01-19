@@ -360,6 +360,10 @@ public class GameModel{
         return (getEmptyCellsCount()+1)*(getEmptyTableausCount()+1);
     }
 
+    public void undoAll() throws EndOfHistoryException {
+        while(!moveHistory.isEmpty()) undo();
+    }
+
     class MoveCards implements ActionListener{
         CardCascade from;
         CardCascade onto;
